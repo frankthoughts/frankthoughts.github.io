@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Enterprise Application &#8211; FrankThoughts</title>
+	<atom:link href="https://frankthoughts.github.io/tag/enterprise-application/feed/" rel="self" type="application/rss+xml" />
+	<link>http://frankthoughts.github.io/</link>
+	<description>Frank-Auth-Expert</description>
+	<lastBuildDate>Sun, 17 Jun 2018 03:19:14 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=5.4</generator>
+	<item>
+		<title>Azure Active Directory &#8211; How to Give Permissions for a specific user in Azure Active Directory</title>
+		<link>https://frankthoughts.github.io/2018/06/azure-active-directory-giving-permissions-for-a-specific-user/</link>
+					<comments>https://frankthoughts.github.io/2018/06/azure-active-directory-giving-permissions-for-a-specific-user/#respond</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Sun, 17 Jun 2018 03:19:14 +0000</pubDate>
+				<category><![CDATA[Cloud Identity]]></category>
+		<category><![CDATA[AAD]]></category>
+		<category><![CDATA[Azure Active Directory]]></category>
+		<category><![CDATA[Enterprise Application]]></category>
+		<category><![CDATA[One]]></category>
+		<category><![CDATA[Permissions]]></category>
+		<category><![CDATA[Service Principal]]></category>
+		<category><![CDATA[Single]]></category>
+		<category><![CDATA[Specific]]></category>
+		<category><![CDATA[User]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=100</guid>
+
+					<description><![CDATA[Introduction This post is to help to teach How to Give Permissions for a specific user in Azure Active Directory. This post will assume that your API is already set up properly and you have Global Admin rights to grant the permissions to a specific user. If you are not a global admin for the [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h1>Introduction</h1>
+<p>This post is to help to teach How to Give Permissions for a specific user in Azure Active Directory. This post will assume that your API is already set up properly and you have Global Admin rights to grant the permissions to a specific user. If you are not a global admin for the tenant, you will receive a 400 error saying that you are not authorized to do this. For more information on setting up to utilize the Microsoft Graph API or AAD Graph API please refer to this article: <a href="https://blogs.msdn.microsoft.com/aaddevsup/2018/05/23/using-postman-to-call-the-microsoft-graph-api-using-authorization-code-flow/">https://blogs.msdn.microsoft.com/aaddevsup/2018/05/23/using-postman-to-call-the-microsoft-graph-api-using-authorization-code-flow/</a></p>
+<h1>Granting Permissions to a Specific User</h1>
+<p>When trying to grant a permission to an individual user you will have to grant a specific OAuth2permisison in the tenant for the user. You can do this by using the OAuth2PermissionGrants endpoint.<br />
+The only option right now is to utilize the Azure Active Directory(AAD) Graph API endpoint as the Microsoft Graph API doesn&#8217;t support this feature yet.<br />
+First, you will want to create an AAD Application Registration, and to press the grant permissions for the Application Registration. This will create an enterprise application for your AAD Application Registration which you will need later.<br />
+Using the AAD Graph API, you will want to make a post request to <em>https://graph.windows.net/$tenant/oauth2PermissionGrants?API-version=1.6</em><br />
+Replacing <em>$tenant</em> with your tenant ID.<br />
+In the request body, you will need to describe the properties for your new Oauth2PermissionGrant. I&#8217;ve described what you will need in your body below.</p>
+<pre>{
+"clientId": "This is the objectID of the enterprise application/service principal of the AAD Application Registration. You can find this by going to your enterprise Applications blade and finding the enterprise application you created earlier. The object ID should be there.",
+"consentType": "please refer to principalID attribute below for more information on the consent type; we will want to put Principal here to grant permissions to a single user",
+"expiryTime": "2027-10-08T19:26:10.0101209 (Insert your expiration time here)",
+"principalId": "If consentType is "AllPrincipals", the principal ID value should be null, and this consent will apply to all users in the organization.
+If consentType is "Principal" then this property specifies the objectId of the user that granted consent, and applies only to that user.",
+"resourceId": " bd8e522d-efb5-447e-a2aa-6f500446f2e1, place the resource ID of the resource you want your user to have access to, here I have placed an o365 exchange online object ID ",
+"scope": "(insert your scopes/permissions for the user here)",
+"startTime": "0001-01-01T00:00:00"
+}
+</pre>
+<p>For more information on the entity: OAuth2Permission Grant please refer to our documentation here: <a href="https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#oauth2permissiongrant-entity">https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#oauth2permissiongrant-entity</a><br />
+The scopes you can use are listed below.<br />
+Delegated (work or school account) Directory.ReadWrite.All, Directory.AccessAsUser.All<br />
+Delegated (personal Microsoft account) Not supported.<br />
+Application Directory.ReadWrite.All</p>
+<h1>Conclusion</h1>
+<p>By using the Azure Active Directory Graph API and sending a Post Request to the OAuth2PermissionGrant endpoint we are able to give a single user the proper scopes to access a secured API. I refer to another blog using Postman to get an access token utilizing the Authorization Code Flow in order to access the Microsoft Graph API. Note that the same process to get an access token for the Microsoft Graph API will be used to get an access to the AAD Graph API. The only difference will be to grant the proper permissions to the AAD Graph API instead of the Microsoft Graph API and to set a different resource when requesting the access token. After getting access to the AAD Graph API we construct the Post request to the oauth2permissions grant endpoint in the AAD Graph API creating the service principal for the AAD User so that they can access a secured API based on the object ID of the user using a service principal in AAD.<br />
+[poet-badge]</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/06/azure-active-directory-giving-permissions-for-a-specific-user/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>
