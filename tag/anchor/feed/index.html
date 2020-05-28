@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Anchor &#8211; FrankThoughts</title>
+	<atom:link href="https://frankthoughts.github.io/tag/anchor/feed/" rel="self" type="application/rss+xml" />
+	<link>http://frankthoughts.github.io/</link>
+	<description>Frank-Auth-Expert</description>
+	<lastBuildDate>Sun, 19 Aug 2018 22:40:39 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=5.4</generator>
+	<item>
+		<title>3D Printing &#8211; How to 3D Model Threads for Screws Using FreeCAD</title>
+		<link>https://frankthoughts.github.io/2018/08/3d-printing-how-to-3d-model-threads-for-screws-using-freecad-threaded-base/</link>
+					<comments>https://frankthoughts.github.io/2018/08/3d-printing-how-to-3d-model-threads-for-screws-using-freecad-threaded-base/#respond</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Sun, 19 Aug 2018 22:40:39 +0000</pubDate>
+				<category><![CDATA[3D Printing]]></category>
+		<category><![CDATA[3d Modeling]]></category>
+		<category><![CDATA[3D printing]]></category>
+		<category><![CDATA[Anchor]]></category>
+		<category><![CDATA[FreeCAD]]></category>
+		<category><![CDATA[Screw]]></category>
+		<category><![CDATA[ThreadedBase]]></category>
+		<category><![CDATA[Threading]]></category>
+		<category><![CDATA[Threads]]></category>
+		<category><![CDATA[tutorial]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=94</guid>
+
+					<description><![CDATA[Introduction I have been modeling my own threaded models recently and have been running into quite a few issues. I have finally found what works and doesn&#8217;t work in order to print screws for 3D printing. This post is meant to help guide new CAD users on How to 3D Model Threads for Screws Using [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h1>Introduction</h1>
+<p>I have been modeling my own threaded models recently and have been running into quite a few issues. I have finally found what works and doesn&#8217;t work in order to print screws for 3D printing. This post is meant to help guide new CAD users on How to 3D Model Threads for Screws Using FreeCAD. We will go over the process on how to generate a helix in FreeCAD, generate countersunk thread hole, and generate the screw with threads to fit into the countersunk hole.</p>
+<blockquote><p>I am currently working on FreeCAD v 0.7. Depending on your versioning your mileage may vary. Sometimes my FreeCAD will crash randomly when moving to a different workbench or trying to perform some sort of task, be sure to regularly save when working on something in FreeCAD. that being said, since it&#8217;s free it&#8217;s hard to complain.</p></blockquote>
+<h1>Terminology</h1>
+<p>There are some technical terms to keep in mind when working with screws. Understanding these terms will help to make the process easier as there is a lot going on in a screw.<br />
+Below is taken from: <em>&#8211; Taken from <a href="https://www.afi.cc/blog/screw-thread-terminology">https://www.afi.cc/blog/screw-thread-terminology</a></em><br />
+<img src="https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=397&amp;name=Screw%20thread-1.jpg" sizes="(max-width: 397px) 100vw, 397px" srcset="https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=199&amp;name=Screw%20thread-1.jpg 199w, https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=397&amp;name=Screw%20thread-1.jpg 397w, https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=596&amp;name=Screw%20thread-1.jpg 596w, https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=794&amp;name=Screw%20thread-1.jpg 794w, https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=993&amp;name=Screw%20thread-1.jpg 993w, https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=1191&amp;name=Screw%20thread-1.jpg 1191w" alt="Screw thread-1.jpg" width="397" /><br />
+<em>When researching different types of screw threads, you will encounter some basic terms:</em></p>
+<ul>
+<li><em><strong>Major diameter</strong> – In an external thread like the edges of a screw, major diameter refers to the diameter of the overall shaft, including the height of the raised helix. It can be measured on the crests with a </em>calliper<em> rule or slot gauge.</em></li>
+</ul>
+<ul>
+<li><em><strong>Minor diameter</strong> – Minor diameter measures the diameter of the “root,” or innermost part of the screw, not including the crests of the helix. For accuracy, this measurement requires specialized equipment.</em></li>
+</ul>
+<ul>
+<li><em><strong>Effective diameter</strong> – The effective diameter is halfway between the major and minor diameters. In other words, it measures halfway up the helix crest. For accuracy, this measurement also requires specialized equipment.</em></li>
+</ul>
+<ul>
+<li><em><strong>Pitch</strong> – The pitch is the distance between two identical threads.</em></li>
+</ul>
+<ul>
+<li><em><strong>Flank</strong> – The flank is the angle at which the helix is raised to form a crest on the thread.</em></li>
+</ul>
+<ul>
+<li><em><strong>Crest</strong> – The crest is the height at which an external thread is </em>raised,<em> or the depth at which an internal thread is indented. For common applications, screws and bolts are measured at the crests, while nuts are measured at the roots.</em></li>
+</ul>
+<p>In addition to the screw terminology, the object that you screw the screw has many different names: Taphole, Bolthole, Nuthole, or ThreadedHole. I will be referring to it as a threaded hole in this post, but just don&#8217;t be surprised if you see a different name for the hole as different people call it different names.</p>
+<h1>Creating the ThreadedHole</h1>
+<p>When creating the threaded hole, we will need to create two things and then utilize the sweep along functionality in FreeCAD in order to sweep the sketch along the helix. Please remember to keep track of your minor and major diameter as you will need to keep this information in mind when creating the screw later on.</p>
+<h2>Generate the Helix for Thread</h2>
+<p>First, to create the threading, we will have to create the Helix. To do this, open up FreeCAD and open the part workbench.<br />
+<img src="https://i.imgur.com/M3DWBix.png" /><br />
+&nbsp;<br />
+Now that you have moved to the Part Workbench, You should now see some different items at the top of your window in the toolbar section. Below is what mine looks like, you will want to open the icon that has multiple shapes in it. This icon is highlighted below.<br />
+<img src="https://i.imgur.com/1rofbZK.png" /><br />
+If you do not see this icon or the shapes on the left to it. You may need to enable the solids toolbar, you can do this by right-clicking on the toolbar and rechecking the solids section.<br />
+<img src="https://i.imgur.com/Ce4XCwd.png" /><br />
+After clicking on the multiple shape icon, it will change your combo view on the left to the tasks panel and show the solid creation panel.<br />
+<img src="https://i.imgur.com/bFoZDg9.png" /><br />
+From there, click on the drop-down menu that says <em>Plane</em>. This will open up to show the many different shapes we can create. Click on the row that says <em>Helix</em>.<br />
+<img src="https://i.imgur.com/kpGjepa.png" /><br />
+After clicking on it, we should now be at the Helix Creation panel.<br />
+<img src="https://i.imgur.com/WhXwL5q.png" /><br />
+From here, we can define the different attributes for the helix we are going to generate. Remembering the terminology of the screw, the pitch will determine how many threads are made per mm, height will determine how high it will be, the radius will be the Pitch Diameter displayed in the picture in the terminology section.<br />
+Here I am going to use:</p>
+<ul>
+<li>Pitch : 2MM</li>
+<li>Height : 5MM</li>
+<li>Radius : 10MM</li>
+</ul>
+<p><img src="https://i.imgur.com/IGFlv2k.png" /><br />
+Then when you press the create button. It will generate the helix in the main panel.<br />
+<img src="https://i.imgur.com/fQZDRw8.png" /><br />
+&nbsp;<br />
+We have now successfully generated the helix. This is going to be what we utilize to generate the 3d model. We do this by utilizing a sketch to sweep along the helix.<br />
+Now that we have the helix, press the close button to finish and close out of this panel.</p>
+<h2>Drawing the Sketch for Thread</h2>
+<p>Now that we have generated the helix for the thread, we will need to draw what the thread will look like. We can do this by going to the Part Design workbench now.<br />
+<img src="https://i.imgur.com/VjLJ9Zr.png" /><br />
+Now you should see new tools on your toolbar. Click on the item highlighted below. It&#8217;s the page with the two red shapes on it.<br />
+<img src="https://i.imgur.com/AGGP6z5.png" /><br />
+This will open the sketch panel to draw on an item. From here, click on XZ plane and press the OK Button.<br />
+<img src="https://i.imgur.com/UZvxtUW.png" /><br />
+Now we can start drawing the sketch for the threads. Click on the 4 red dotted icon. If you click on a blank space in the toolbar and then hover your mouse over it, it should open a small little window that says &#8220;Create a polyline in the sketch.&#8221; Note that there is another one next to it for creating B Splines, that is not the one you want to use.<br />
+<img src="https://i.imgur.com/RvCWQmO.png" /><br />
+Now, zoom in on the end of the helix, and draw triangle pointing inwards. Remember that we are creating the thread hole, so this is going to be an inward thread. You don&#8217;t have to be exact as we are going to create constraints for the thread in the next step. Just try to draw the triangle with the helix end in the middle of the triangle.<br />
+<img src="https://i.imgur.com/qPcHuNT.png" /><br />
+Now that we have a rough drawing, we can create constraints to make it exact.<br />
+The three things we will want to do are:</p>
+<ul>
+<li>constrain the angle</li>
+<li>constrain two lines to be equal lengths</li>
+<li>constrain the distance from the points to the origin</li>
+</ul>
+<p>These constraints are important since it will make the sketch go around the helix evenly across the 3 dimensions.</p>
+<h3>Constrain The Angle</h3>
+<p>First, for the angle, find the angle constraint in the toolbar.<br />
+<img src="https://i.imgur.com/n2DaJMg.png" /><br />
+From there, we will want to press the angle button, and click the two lines below that have arrows pointing to them. And we will then want to make it a 60 degree angle between the two lines.<br />
+<img src="https://i.imgur.com/3iSdasb.png" /></p>
+<h3>Constrain the Length of Thread</h3>
+<p>Now that we have made the angle constraint, we will want to make the equality constraint. The picture below has arrows pointing to the two lines you will want to click on after pressing the equality button. This will make the two lines always equal to each other.<br />
+<img src="https://i.imgur.com/BPuYKIx.png" /></p>
+<h3>Constrain the Distance from Thread to Origin of Helix</h3>
+<p>Now that we have added the equality constraint, we will want to constrain the distance the points are from the origin. Below is a picture of the fixed horizontal difference icon tool. Click on it, and then press one of the dots on the triangle and then press the origin dot. This will open up a dialog where you can set the distance the dot is from the origin. Depending on how big you want to make the thread, you will change your numbers accordingly, here I have put in a length of 9mm, for the inner point to the origin.<br />
+<img src="https://i.imgur.com/vdvfGNt.png" /><br />
+<img src="https://i.imgur.com/GQvj79E.png" /><br />
+&nbsp;<br />
+Then we will do this for one of the dots on the outer edge. I have set it to 11mm.<br />
+Now press close on the left panel, to go back to the main view.<br />
+We have created the sketch and the helix now. All that is needed now is to sweep the sketch along the helix to generate the 3d design.</p>
+<h2>Generate the 3D Thread using Sketch and Helix</h2>
+<p>Go back to the Part workbench that we had originally gone to in the first step when creating the Helix. Now there should be a Utility to Sweep icon.<br />
+<img src="https://i.imgur.com/gVPMTUi.png" /><br />
+Click on the Utility to sweep icon and it will open up a new panel called Sweep. Here we can sweep the sketch along the helix. Click on the sketch under the available profiles column and move it to the selected profiles. Then check the boxes &#8220;Create Solid&#8221; and &#8220;Frenet&#8221;.<br />
+<img src="https://i.imgur.com/UqTCkge.png" /><br />
+<img src="https://i.imgur.com/Oa51icn.png" /><br />
+Now that we have the sketch in the selected profiles and the helix in the available profiles, click on both of them and then press sweep path.<br />
+We will now have to click on each item in the helix while holding ctrl. You will have to do this one pitch at a time,<br />
+<img src="https://i.imgur.com/D4YOkw9.png" /><br />
+<img src="https://i.imgur.com/p8FkQk2.png" /><br />
+After you have clicked each pitch, click on done on the left. This will not generate the ThreadedHole yet.<br />
+Press OK after pressing done.<br />
+You should now see a 3 dimensional outer thread for your Screw.<br />
+<img src="https://i.imgur.com/Vz8ZihK.png" /><br />
+Congratulations! Now you should have a ThreadBase that you can screw things into.</p>
+<h2>Creating the Screw</h2>
+<p>In order to create the Screw part, you will follow the same steps you did to create the Outer Thread. The only difference is that you will want to make the inner thread point the other way when drawing the sketch.<br />
+<img src="https://i.imgur.com/S5XyT3e.png" /><br />
+If you want to make the screw thread match the outer thread, be sure to leave a MM or a half mm of space depending on how accurate your 3d printer is. As 3d printers aren&#8217;t usually that accurate, leaving some space will assure that your screw and threadedhole match properly.<br />
+&nbsp;</p>
+<blockquote><p>The below picture is an example showing the differences between the sketches. This example is using the same sketch, but when you create a new thread, you will need to create a new sketch.</p></blockquote>
+<p><img src="https://i.imgur.com/RpwbL91.png" /><br />
+Then sweep along the helix using the new triangle, and you will then have the thread for your screw.<br />
+<img src="https://i.imgur.com/Pqtk4Yx.png" /></p>
+<h1>Conclusion</h1>
+<p>In this post we have gone through how to generate a helix, draw sketch, and sweep along the helix using the sketch. We went throught this process for both the Threadedhole and the screw. Hopefully now you should be properly equipped to generate screws and threads for your projects. If you have any questions in regards to this, feel free to leave a comment and I will try to reach out to you as soon as possible.<br />
+[poet-badge]</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/08/3d-printing-how-to-3d-model-threads-for-screws-using-freecad-threaded-base/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>
