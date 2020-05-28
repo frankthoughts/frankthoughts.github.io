@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>FrankThoughts</title>
+	<atom:link href="https://frankthoughts.github.io/feed/" rel="self" type="application/rss+xml" />
+	<link>http://frankthoughts.github.io/</link>
+	<description>Frank-Auth-Expert</description>
+	<lastBuildDate>Sun, 19 Aug 2018 22:40:39 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=5.4</generator>
+	<item>
+		<title>3D Printing &#8211; How to 3D Model Threads for Screws Using FreeCAD</title>
+		<link>https://frankthoughts.github.io/2018/08/3d-printing-how-to-3d-model-threads-for-screws-using-freecad-threaded-base/</link>
+					<comments>https://frankthoughts.github.io/2018/08/3d-printing-how-to-3d-model-threads-for-screws-using-freecad-threaded-base/#respond</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Sun, 19 Aug 2018 22:40:39 +0000</pubDate>
+				<category><![CDATA[3D Printing]]></category>
+		<category><![CDATA[3d Modeling]]></category>
+		<category><![CDATA[3D printing]]></category>
+		<category><![CDATA[Anchor]]></category>
+		<category><![CDATA[FreeCAD]]></category>
+		<category><![CDATA[Screw]]></category>
+		<category><![CDATA[ThreadedBase]]></category>
+		<category><![CDATA[Threading]]></category>
+		<category><![CDATA[Threads]]></category>
+		<category><![CDATA[tutorial]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=94</guid>
+
+					<description><![CDATA[Introduction I have been modeling my own threaded models recently and have been running into quite a few issues. I have finally found what works and doesn&#8217;t work in order to print screws for 3D printing. This post is meant to help guide new CAD users on How to 3D Model Threads for Screws Using [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h1>Introduction</h1>
+<p>I have been modeling my own threaded models recently and have been running into quite a few issues. I have finally found what works and doesn&#8217;t work in order to print screws for 3D printing. This post is meant to help guide new CAD users on How to 3D Model Threads for Screws Using FreeCAD. We will go over the process on how to generate a helix in FreeCAD, generate countersunk thread hole, and generate the screw with threads to fit into the countersunk hole.</p>
+<blockquote><p>I am currently working on FreeCAD v 0.7. Depending on your versioning your mileage may vary. Sometimes my FreeCAD will crash randomly when moving to a different workbench or trying to perform some sort of task, be sure to regularly save when working on something in FreeCAD. that being said, since it&#8217;s free it&#8217;s hard to complain.</p></blockquote>
+<h1>Terminology</h1>
+<p>There are some technical terms to keep in mind when working with screws. Understanding these terms will help to make the process easier as there is a lot going on in a screw.<br />
+Below is taken from: <em>&#8211; Taken from <a href="https://www.afi.cc/blog/screw-thread-terminology">https://www.afi.cc/blog/screw-thread-terminology</a></em><br />
+<img src="https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=397&amp;name=Screw%20thread-1.jpg" sizes="(max-width: 397px) 100vw, 397px" srcset="https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=199&amp;name=Screw%20thread-1.jpg 199w, https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=397&amp;name=Screw%20thread-1.jpg 397w, https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=596&amp;name=Screw%20thread-1.jpg 596w, https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=794&amp;name=Screw%20thread-1.jpg 794w, https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=993&amp;name=Screw%20thread-1.jpg 993w, https://www.afi.cc/hs-fs/hubfs/Screw%20thread-1.jpg?t=1534542566013&amp;width=1191&amp;name=Screw%20thread-1.jpg 1191w" alt="Screw thread-1.jpg" width="397" /><br />
+<em>When researching different types of screw threads, you will encounter some basic terms:</em></p>
+<ul>
+<li><em><strong>Major diameter</strong> – In an external thread like the edges of a screw, major diameter refers to the diameter of the overall shaft, including the height of the raised helix. It can be measured on the crests with a </em>calliper<em> rule or slot gauge.</em></li>
+</ul>
+<ul>
+<li><em><strong>Minor diameter</strong> – Minor diameter measures the diameter of the “root,” or innermost part of the screw, not including the crests of the helix. For accuracy, this measurement requires specialized equipment.</em></li>
+</ul>
+<ul>
+<li><em><strong>Effective diameter</strong> – The effective diameter is halfway between the major and minor diameters. In other words, it measures halfway up the helix crest. For accuracy, this measurement also requires specialized equipment.</em></li>
+</ul>
+<ul>
+<li><em><strong>Pitch</strong> – The pitch is the distance between two identical threads.</em></li>
+</ul>
+<ul>
+<li><em><strong>Flank</strong> – The flank is the angle at which the helix is raised to form a crest on the thread.</em></li>
+</ul>
+<ul>
+<li><em><strong>Crest</strong> – The crest is the height at which an external thread is </em>raised,<em> or the depth at which an internal thread is indented. For common applications, screws and bolts are measured at the crests, while nuts are measured at the roots.</em></li>
+</ul>
+<p>In addition to the screw terminology, the object that you screw the screw has many different names: Taphole, Bolthole, Nuthole, or ThreadedHole. I will be referring to it as a threaded hole in this post, but just don&#8217;t be surprised if you see a different name for the hole as different people call it different names.</p>
+<h1>Creating the ThreadedHole</h1>
+<p>When creating the threaded hole, we will need to create two things and then utilize the sweep along functionality in FreeCAD in order to sweep the sketch along the helix. Please remember to keep track of your minor and major diameter as you will need to keep this information in mind when creating the screw later on.</p>
+<h2>Generate the Helix for Thread</h2>
+<p>First, to create the threading, we will have to create the Helix. To do this, open up FreeCAD and open the part workbench.<br />
+<img src="https://i.imgur.com/M3DWBix.png" /><br />
+&nbsp;<br />
+Now that you have moved to the Part Workbench, You should now see some different items at the top of your window in the toolbar section. Below is what mine looks like, you will want to open the icon that has multiple shapes in it. This icon is highlighted below.<br />
+<img src="https://i.imgur.com/1rofbZK.png" /><br />
+If you do not see this icon or the shapes on the left to it. You may need to enable the solids toolbar, you can do this by right-clicking on the toolbar and rechecking the solids section.<br />
+<img src="https://i.imgur.com/Ce4XCwd.png" /><br />
+After clicking on the multiple shape icon, it will change your combo view on the left to the tasks panel and show the solid creation panel.<br />
+<img src="https://i.imgur.com/bFoZDg9.png" /><br />
+From there, click on the drop-down menu that says <em>Plane</em>. This will open up to show the many different shapes we can create. Click on the row that says <em>Helix</em>.<br />
+<img src="https://i.imgur.com/kpGjepa.png" /><br />
+After clicking on it, we should now be at the Helix Creation panel.<br />
+<img src="https://i.imgur.com/WhXwL5q.png" /><br />
+From here, we can define the different attributes for the helix we are going to generate. Remembering the terminology of the screw, the pitch will determine how many threads are made per mm, height will determine how high it will be, the radius will be the Pitch Diameter displayed in the picture in the terminology section.<br />
+Here I am going to use:</p>
+<ul>
+<li>Pitch : 2MM</li>
+<li>Height : 5MM</li>
+<li>Radius : 10MM</li>
+</ul>
+<p><img src="https://i.imgur.com/IGFlv2k.png" /><br />
+Then when you press the create button. It will generate the helix in the main panel.<br />
+<img src="https://i.imgur.com/fQZDRw8.png" /><br />
+&nbsp;<br />
+We have now successfully generated the helix. This is going to be what we utilize to generate the 3d model. We do this by utilizing a sketch to sweep along the helix.<br />
+Now that we have the helix, press the close button to finish and close out of this panel.</p>
+<h2>Drawing the Sketch for Thread</h2>
+<p>Now that we have generated the helix for the thread, we will need to draw what the thread will look like. We can do this by going to the Part Design workbench now.<br />
+<img src="https://i.imgur.com/VjLJ9Zr.png" /><br />
+Now you should see new tools on your toolbar. Click on the item highlighted below. It&#8217;s the page with the two red shapes on it.<br />
+<img src="https://i.imgur.com/AGGP6z5.png" /><br />
+This will open the sketch panel to draw on an item. From here, click on XZ plane and press the OK Button.<br />
+<img src="https://i.imgur.com/UZvxtUW.png" /><br />
+Now we can start drawing the sketch for the threads. Click on the 4 red dotted icon. If you click on a blank space in the toolbar and then hover your mouse over it, it should open a small little window that says &#8220;Create a polyline in the sketch.&#8221; Note that there is another one next to it for creating B Splines, that is not the one you want to use.<br />
+<img src="https://i.imgur.com/RvCWQmO.png" /><br />
+Now, zoom in on the end of the helix, and draw triangle pointing inwards. Remember that we are creating the thread hole, so this is going to be an inward thread. You don&#8217;t have to be exact as we are going to create constraints for the thread in the next step. Just try to draw the triangle with the helix end in the middle of the triangle.<br />
+<img src="https://i.imgur.com/qPcHuNT.png" /><br />
+Now that we have a rough drawing, we can create constraints to make it exact.<br />
+The three things we will want to do are:</p>
+<ul>
+<li>constrain the angle</li>
+<li>constrain two lines to be equal lengths</li>
+<li>constrain the distance from the points to the origin</li>
+</ul>
+<p>These constraints are important since it will make the sketch go around the helix evenly across the 3 dimensions.</p>
+<h3>Constrain The Angle</h3>
+<p>First, for the angle, find the angle constraint in the toolbar.<br />
+<img src="https://i.imgur.com/n2DaJMg.png" /><br />
+From there, we will want to press the angle button, and click the two lines below that have arrows pointing to them. And we will then want to make it a 60 degree angle between the two lines.<br />
+<img src="https://i.imgur.com/3iSdasb.png" /></p>
+<h3>Constrain the Length of Thread</h3>
+<p>Now that we have made the angle constraint, we will want to make the equality constraint. The picture below has arrows pointing to the two lines you will want to click on after pressing the equality button. This will make the two lines always equal to each other.<br />
+<img src="https://i.imgur.com/BPuYKIx.png" /></p>
+<h3>Constrain the Distance from Thread to Origin of Helix</h3>
+<p>Now that we have added the equality constraint, we will want to constrain the distance the points are from the origin. Below is a picture of the fixed horizontal difference icon tool. Click on it, and then press one of the dots on the triangle and then press the origin dot. This will open up a dialog where you can set the distance the dot is from the origin. Depending on how big you want to make the thread, you will change your numbers accordingly, here I have put in a length of 9mm, for the inner point to the origin.<br />
+<img src="https://i.imgur.com/vdvfGNt.png" /><br />
+<img src="https://i.imgur.com/GQvj79E.png" /><br />
+&nbsp;<br />
+Then we will do this for one of the dots on the outer edge. I have set it to 11mm.<br />
+Now press close on the left panel, to go back to the main view.<br />
+We have created the sketch and the helix now. All that is needed now is to sweep the sketch along the helix to generate the 3d design.</p>
+<h2>Generate the 3D Thread using Sketch and Helix</h2>
+<p>Go back to the Part workbench that we had originally gone to in the first step when creating the Helix. Now there should be a Utility to Sweep icon.<br />
+<img src="https://i.imgur.com/gVPMTUi.png" /><br />
+Click on the Utility to sweep icon and it will open up a new panel called Sweep. Here we can sweep the sketch along the helix. Click on the sketch under the available profiles column and move it to the selected profiles. Then check the boxes &#8220;Create Solid&#8221; and &#8220;Frenet&#8221;.<br />
+<img src="https://i.imgur.com/UqTCkge.png" /><br />
+<img src="https://i.imgur.com/Oa51icn.png" /><br />
+Now that we have the sketch in the selected profiles and the helix in the available profiles, click on both of them and then press sweep path.<br />
+We will now have to click on each item in the helix while holding ctrl. You will have to do this one pitch at a time,<br />
+<img src="https://i.imgur.com/D4YOkw9.png" /><br />
+<img src="https://i.imgur.com/p8FkQk2.png" /><br />
+After you have clicked each pitch, click on done on the left. This will not generate the ThreadedHole yet.<br />
+Press OK after pressing done.<br />
+You should now see a 3 dimensional outer thread for your Screw.<br />
+<img src="https://i.imgur.com/Vz8ZihK.png" /><br />
+Congratulations! Now you should have a ThreadBase that you can screw things into.</p>
+<h2>Creating the Screw</h2>
+<p>In order to create the Screw part, you will follow the same steps you did to create the Outer Thread. The only difference is that you will want to make the inner thread point the other way when drawing the sketch.<br />
+<img src="https://i.imgur.com/S5XyT3e.png" /><br />
+If you want to make the screw thread match the outer thread, be sure to leave a MM or a half mm of space depending on how accurate your 3d printer is. As 3d printers aren&#8217;t usually that accurate, leaving some space will assure that your screw and threadedhole match properly.<br />
+&nbsp;</p>
+<blockquote><p>The below picture is an example showing the differences between the sketches. This example is using the same sketch, but when you create a new thread, you will need to create a new sketch.</p></blockquote>
+<p><img src="https://i.imgur.com/RpwbL91.png" /><br />
+Then sweep along the helix using the new triangle, and you will then have the thread for your screw.<br />
+<img src="https://i.imgur.com/Pqtk4Yx.png" /></p>
+<h1>Conclusion</h1>
+<p>In this post we have gone through how to generate a helix, draw sketch, and sweep along the helix using the sketch. We went throught this process for both the Threadedhole and the screw. Hopefully now you should be properly equipped to generate screws and threads for your projects. If you have any questions in regards to this, feel free to leave a comment and I will try to reach out to you as soon as possible.<br />
+[poet-badge]</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/08/3d-printing-how-to-3d-model-threads-for-screws-using-freecad-threaded-base/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Azure Services &#8211; Fix Persistence Issues for WordPress on Linux Azure App Services</title>
+		<link>https://frankthoughts.github.io/2018/08/azure-services-fix-persistence-issues-for-wordpress-on-linux-azure-app-service/</link>
+					<comments>https://frankthoughts.github.io/2018/08/azure-services-fix-persistence-issues-for-wordpress-on-linux-azure-app-service/#respond</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Sun, 12 Aug 2018 20:12:57 +0000</pubDate>
+				<category><![CDATA[Azure Services]]></category>
+		<category><![CDATA[App Service]]></category>
+		<category><![CDATA[Azure]]></category>
+		<category><![CDATA[Deleted]]></category>
+		<category><![CDATA[Disappeared]]></category>
+		<category><![CDATA[Issues]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[Lost]]></category>
+		<category><![CDATA[Persistence]]></category>
+		<category><![CDATA[Plugins]]></category>
+		<category><![CDATA[Wordpress]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=165</guid>
+
+					<description><![CDATA[Introduction Every now and then I was having issues with my WordPress on Linux App Service gallery application I had gotten from the Azure Marketplace. My plugins would disappear, my themes would break, and all my pictures would disappear. This article is to help users with issues like this, showing how to fix persistence issues [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h1>Introduction</h1>
+<p>Every now and then I was having issues with my WordPress on Linux App Service gallery application I had gotten from the Azure Marketplace. My plugins would disappear, my themes would break, and all my pictures would disappear. This article is to help users with issues like this, showing how to fix persistence issues for WordPress on Linux Azure App Services.</p>
+<h2>Explanation of Behavior</h2>
+<p>The reason that this issue occurs is due to the fact that the files are not persisted on the file system after restarts, moved to another worker, or other web app maintenance that Azure&#8217;s master node deems to be suitable for the web app. This makes it so that once there is maintenance on the web app, the cached data isn&#8217;t moved over properly. The posts are kept because they are stored on a SQL database (from my understanding).</p>
+<h2>Navigating to Kudu</h2>
+<p>Before configuring the web app to persist data, first you have to make sure that you backup your current WordPress site. This is because the setting you are going to change is going to wipe the web app and remove all WordPress content.</p>
+<blockquote><p>Before backing up your site, make sure that you have all the plugins, etc&#8230; installed.</p></blockquote>
+<p>In order to backup your current WordPress site, you&#8217;ll have to open Kudu on the WordPress application.<br />
+Kudu is a sort of dashboard to debug and connect to your app service. For more information on Kudu you can take a look at these links :<br />
+<a href="https://azure.microsoft.com/en-us/resources/videos/what-is-kudu-with-david-ebbo/">Video on Using Kudu From Microsoft</a><br />
+That being said, in order to access application&#8217;s Kudu please navigate to your app service &gt; advanced tools &gt; go.<br />
+<img src="https://i.imgur.com/Yor6IWP.png" /><br />
+This will bring you to the Kudu dashboard. From there, go to Debug Console &gt; SSH.<br />
+<img src="https://i.imgur.com/KgZVzJA.png" /></p>
+<h2>Backing Up Your App Service</h2>
+<p>Now that we are in Kudu&#8217;s SSH console, we can start backing up the app service&#8217;s data. In the SSH Console run the following commands:<br />
+[code language=&#8221;powershell&#8221;]<br />
+cd /home/site/wwwroot<br />
+apk update<br />
+apk add zip<br />
+apk add ncftp<br />
+zip -r wwwroot.zip .<br />
+[/code]<br />
+Here we are basically going to the wwwroot for your wordpress site, and zipping up everything on the app service and putting it in the wwwroot directory.<br />
+Now that we have created a backup of our WordPress site, we still need to put it into our App Service deployment code. In order to do this, first we will need to get the username, password, and FTP site from the publish profile. To get the publish profile, go to your app service and press &#8220;Get Publish Profile&#8221; in the Azure portal.<br />
+<img src="https://i.imgur.com/gfNwqMp.png" /><br />
+Now go back to the SSH console that you got to through Kudu. Now use the code below, replacing YourUsername and YourFTPURL with your respective information retrieved from the Publish Profile :<br />
+[code language=&#8221;powershell&#8221;]<br />
+ncftp -u &#8216;YourUsername\$YourUsername&#8217; &lt;a href=&quot;ftp://waws-prod-bay-081.ftp.azurewebsites.windows.net&quot;&gt;ftp://YourFTPUrl &lt;/a&gt;site<br />
+[/code]<br />
+Enter your password, and then use the commands :<br />
+[code language=&#8221;powershell&#8221;]<br />
+cd site/wwwroot<br />
+put wwwroot.zip<br />
+[/code]<br />
+Now you should have successfully backed up your app service.</p>
+<h2>Configuring App Service to Persist</h2>
+<blockquote><p>Note: Please make sure that you have backed up your app service properly. If you aren&#8217;t sure, please make sure to copy the content on your wordpress blog and back it up. This process is going to wipe your currently deployed app service.</p></blockquote>
+<p>Now that we have backed up our app service. We will have to configure our App Service to properly cache your data. In order to do this go to your app service&#8217;s app settings and simply configure the websites_enable_app_service_storage from false to true.<br />
+<img src="https://i.imgur.com/bXYT4OK.png" /><br />
+&nbsp;<br />
+Now that we have configured this to true, save it.</p>
+<h2>Restoring Your App Service</h2>
+<p>This will now wipe your app service. Now when you go to your website now and it shows a default app service page. This is normal.<br />
+Reopen your Kudu SSH console, and unzip the file you zipped in the backup stage into your app service.<br />
+[code language=&#8221;powershell&#8221;]<br />
+unzip wwwroot.zip<br />
+[/code]<br />
+You have now restored the App Service and it will look like it used to.</p>
+<h2>Conclusion</h2>
+<p>We have gone through connecting to Kudu, backing up your app service, configuring your app service for persistence, and restoring your app service. Now your WordPress should be ready to go and your plugins won&#8217;t disappear again. If you have anymore questions feel free to post a comment or to open a support ticket with Azure, one of Microsoft&#8217;s Support Engineers will reach out to you to resolve the issue as soon as possible.<br />
+[poet-badge]<br />
+&nbsp;</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/08/azure-services-fix-persistence-issues-for-wordpress-on-linux-azure-app-service/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Alternative Food Reviews &#8211; Soylent After a Month Straight</title>
+		<link>https://frankthoughts.github.io/2018/08/alternative-food-reviews-soylent-after-a-month-straight/</link>
+					<comments>https://frankthoughts.github.io/2018/08/alternative-food-reviews-soylent-after-a-month-straight/#respond</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Fri, 10 Aug 2018 03:04:42 +0000</pubDate>
+				<category><![CDATA[Healthy Office Kitchen Cookerie]]></category>
+		<category><![CDATA[30 day]]></category>
+		<category><![CDATA[Alternative Foods]]></category>
+		<category><![CDATA[cheap foods]]></category>
+		<category><![CDATA[diet]]></category>
+		<category><![CDATA[Long period of time]]></category>
+		<category><![CDATA[Soylent]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=159</guid>
+
+					<description><![CDATA[Introduction Soylent After a Month is quite an experience. This post is to review my time with only using Soylent over the course of a month. I was using a mixture of bagged Soylent and premixed. This was while the bagged Soylent was on V1.7. In addition to this, I&#8217;d like to note that purchasing [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h1>Introduction</h1>
+<p>Soylent After a Month is quite an experience. This post is to review my time with only using Soylent over the course of a month. I was using a mixture of bagged Soylent and premixed. This was while the bagged Soylent was on V1.7.<br />
+In addition to this, I&#8217;d like to note that purchasing Soylent straight from the website is cheaper than buying it on Amazon. I highly suggest going to Soylent.com in order to purchase your product.<br />
+If you use my referral link below, you can get the first order of 12 soylent bottles for 50% off! It&#8217;s worth trying for 50% off. In addition to that, they will donate 1$ to world hunger :<br />
+<a href="http://r.soy.lt/jUm8Z">http://r.soy.lt/jUm8Z</a></p>
+<h2>Inventory</h2>
+<p><em>Ordered 12/15/16 from <a href="https://soylent.com/">www.soylent.com</a></em></p>
+<ul>
+<li>6 x 12 Soylent Originals (72 bottles or 14.4 days of original)</li>
+<li>3 x 12 Coffiest Soylent (C1-00CFE) (36 bottles or 7.2 days of Coffiest)</li>
+<li>9 Bags of Soylent (9 Days)</li>
+</ul>
+<h2>Pros</h2>
+<p>Convenience, Speed, Don&#8217;t have to cook or order out, No need to wonder what to eat next, time-saving</p>
+<h2>Cons</h2>
+<p>Price, Taste, Makes you feel like a robot, off-putting at first drinking only Soylent, No chewing/eating food makes your jaws lose strength, not being able to eat with others</p>
+<h2>A Summary of my Experience</h2>
+<p>At first, it&#8217;s a bit scary drinking only liquid over the course of 30 days. Because it&#8217;s so different you really have to get used to drinking the soylent mentally. Physically, it&#8217;s actually quite nice since you don&#8217;t have to figure out what you want to eat, cook it, go out to buy the food/ingredients, and etc&#8230;<br />
+The convenience of soylent is amazing. Simply order a month of Soylent, it gets delivered to your house. Then you&#8217;re done, you have a month supply of food in your living room. If you&#8217;re hungry all you have to do is walk over and grab a bottle. It&#8217;s sort of like the convenience factor of having to wear a uniform to school. You never really have to worry about what to wear, all you have to do is get your uniform and go. It simplifies things, and I really didn&#8217;t even miss eating food. It truly is a game changer and opens up your life to do so many more things with that saved time.<br />
+That being said, you have to get adjusted to drinking only liquid for food. Only consuming liquid for sustenance can be really off-putting at first. Honestly, after a while, you&#8217;ll start to feel like a robot getting your daily gas for the day. But Soylent really changes things. Since you are consuming the optimal amount of calories/nutrients, you don&#8217;t overeat or undereat anymore. You don&#8217;t have to worry about whether you are getting all your nutrients as long as you&#8217;re consuming your five bottles of Soylent a day.<br />
+An interesting side effect of only drinking soylent was that my jaws started to feel sore after I talked for too long. I didn&#8217;t really notice this at first but I realized because I wasn&#8217;t chewing food anymore I wasn&#8217;t really using my jaws much anymore. This might have been a placebo, but I had to start chewing a bit of gum to fight off the soreness and recessed jaw muscles.<br />
+Another issue with Soylent that some people have is that they aren&#8217;t able to eat food with other people. Personally, it wasn&#8217;t a super big deal. I don&#8217;t mind sitting with others drinking water or something, to be honest. It&#8217;s not an awkward experience for me at all, most of the time people are on their phones anyways at some point in time, so I&#8217;d just scroll through Reddit or try to do something more productive with my time.</p>
+<h2>Key Experience</h2>
+<p>An extremely important experience regarding my bottled soylent experience was that I felt the best I had ever felt IN MY LIFE. I used to feel bloated or uncomfortable if I ate something bad. But I never felt bloated while on Soylent. Also, when you&#8217;re hungry it&#8217;s very easy to resolve the hunger quickly. All you would have to do is go to the soylent storage and grab a bottle and then, you&#8217;re not hungry anymore. I lost some weight, and I felt super light. I truly loved drinking Soylent because of this, and I was playing a lot of League of Legends during this time, so I could easily drink my meal between loading screens.<br />
+I felt so efficient, however, when you are continuously playing league of legends on hours, you get this special type of fatigue that I personally had never experienced before. Usually, you will have to take a break to eat food, but I never took a break. So I just kept going, and this made me so tired! It was a very interesting experience for me as I had never felt this kind of fatigue before! Even two years later, I remember this fatigue like yesterday and it truly was an experience to be had.</p>
+<h2>Bottled Soylent vs Packaged Powder Soylent</h2>
+<p>The bottled soylent was MUCH MUCH better than the packaged powder soylent. Honestly, the powdered soylent was NOT convenient, mixing Soylent at V1.7 was extremely bad. The powder didn&#8217;t mix well with water and you really needed a blender to properly mix the soylent. not to mention, you have to clean the bottles. And if you didn&#8217;t clean the bottles IMMEDIATELY, the bottles will start to smell horrific. I have no idea what that smell was but it got so bad, I had to start cleaning everything immediately after mixing the soylent up.<br />
+That being said, the bottled soylent was great. I personally really enjoyed the taste. It was like a slight vanilla flavored taste of Soylent and I honestly liked it. The powder soylent, no matter what I did, never would taste close to what the bottled tasted like. I tried multiple levels of mixture, but there was no way it would taste like whatever they do for the bottled soylent.</p>
+<h2>Overall</h2>
+<p>I would highly suggest trying Soylent if you haven&#8217;t. I personally would have continued to drink bottled Soylent if it wasn&#8217;t so expensive. I have gone back to regular food but sometime substitute some breakfasts with Coffiest because of how convenient it is. But purchasing foods is actually cheaper than Soylent, so it&#8217;s hard to justify actually drinking Soylent 5 times a day. I hope that they are able to drive the price down, and one day it&#8217;ll be cheaper to actually drink Soylent than to buy food. I&#8217;ll be for sure one of the guys who makes the switch ASAP once it&#8217;s reached that inflection point as I did truly enjoy my experience drinking Soylent.<br />
+[poet-badge]<br />
+&nbsp;</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/08/alternative-food-reviews-soylent-after-a-month-straight/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Cryptoassets &#8211; A Guide On How to Use the Frost Po.et Plugin</title>
+		<link>https://frankthoughts.github.io/2018/06/using-frost-po-et-plugin/</link>
+					<comments>https://frankthoughts.github.io/2018/06/using-frost-po-et-plugin/#respond</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Tue, 19 Jun 2018 12:13:54 +0000</pubDate>
+				<category><![CDATA[Cryptoassets]]></category>
+		<category><![CDATA[API token]]></category>
+		<category><![CDATA[Frost]]></category>
+		<category><![CDATA[Guide]]></category>
+		<category><![CDATA[how to]]></category>
+		<category><![CDATA[Keys]]></category>
+		<category><![CDATA[OAuth2]]></category>
+		<category><![CDATA[Plugin]]></category>
+		<category><![CDATA[Po.et]]></category>
+		<category><![CDATA[Poet]]></category>
+		<category><![CDATA[tutorial]]></category>
+		<category><![CDATA[Wordpress]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=122</guid>
+
+					<description><![CDATA[Introduction This post is a short guide on How to use the Frost Po.et Plugin to help new users of the frost plugin for po.et to get up and running. We will start from the WordPress wp-admin dashboard install our po.et plugin, get the key, and utilize the po.et plugin in a post. Note: As [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h1>Introduction</h1>
+<p>This post is a short guide on How to use the Frost Po.et Plugin to help new users of the frost plugin for po.et to get up and running. We will start from the WordPress wp-admin dashboard install our po.et plugin, get the key, and utilize the po.et plugin in a post.</p>
+<blockquote><p>Note: As time moves on things will change. For that sake please keep in mind the versioning. I am using <strong>WordPress 4.9.5</strong> and the <strong><a href="https://blog.po.et/announcing-frost-an-open-api-for-publishers-a16addbd4bdd">po.et plugin</a> is version 1.0.1</strong> as of 6/19/18. If you are using a different versioning your mileage may vary. Please comment if your version is different and I may be able to help.</p></blockquote>
+<h2>Installing the Po.et Plugin</h2>
+<p>In order to install the po.et plugin, from the wp-admin dashboard, go to the plugins section on the left-hand side and hover over <em>plugins</em>, and then go to <em>add new</em>.</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="DVnlCNq"><p>&nbsp;</p></blockquote>
+<p><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script><br />
+From there, we will see the plugins marketplace. In the search bar highlighted below on the right side of the panel, please look up po.et. You should then be able to see the plugin po.et with the feather. I have already installed this item, but if you haven&#8217;t you would see an install button, press the install button and you should have po.et on your WordPress site now.</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="TPPUALq"><p>&nbsp;</p></blockquote>
+<p><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script></p>
+<h2>Configuring Frost for Your Plugin</h2>
+<p>After installing the po.et application, we are going to want to configure the plugin to be able to work on the po.et test-net. In order to do this, you will have to get a key that will identify you as a user of po.et. In order to get the key please go to <a href="https://frost.po.et">https://frost.po.et</a></p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="5TRpoeo"><p>&nbsp;</p></blockquote>
+<p><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script><br />
+There, you will want to sign up for Frost clicking on the green button on the top right of the website.</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="qrDmsWl"><p>&nbsp;</p></blockquote>
+<p><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script><br />
+After signing up, you will be able to reach the frost dashboard which will look like the picture below. From here, please click on API Keys.</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="MTbueB3"><p>&nbsp;</p></blockquote>
+<p><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script><br />
+After clicking on getting API key, you will have to press get API key again. The first click will not automatically generate one, here I have already created one by press the second get API key highlighted below.</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="Cw3W6eQ"><p>&nbsp;</p></blockquote>
+<p><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script><br />
+Now that we have an API key, click on it to copy it your clipboard.</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="07s7WaT"><p>&nbsp;</p></blockquote>
+<p><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script></p>
+<h2>Configuring Plugin to Utilize Frost Information</h2>
+<p>Once we have copied it, you will want to go back to your WordPress dashboard, and hover over the plugins section again and click on installed plugins.</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="2KJbutA"><p>&nbsp;</p></blockquote>
+<p><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script><br />
+Now we should see all our installed plugins, you may have to scroll or search for it if you have many plugins.</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="RHebkdM"><p>&nbsp;</p></blockquote>
+<p><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script><br />
+Here it&#8217;s my fourth plugin. After finding it, click the settings button highlighted in the picture above.<br />
+Now you will be able to see the configurations of the Po.et plugin API.</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="Qw86g3d"><p>&nbsp;</p></blockquote>
+<p><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script><br />
+Paste the API key we copied from the Frost dashboard into the API token area in the poet configurations. In addition, you will have to fill out the Author Name. The Author name is arbitrary and you can utilize whatever author name you would like. Make sure that the API URL is https://api.frost.po.et/works, and that post articles automatically on insert or update are activated. Then press saves changes.  Now you have successfully configured the po.et plugin!</p>
+<h2>Using the Po.et Plugin in a Post</h2>
+<p>Now that we have installed it, we can utilize WordPress&#8217; shortcode feature to install po.et into our posts. You can do this by putting in the shortcode [[poet-badge]] . I put this poet-badge shortcode here by putting another set of brackets around it as shown in the picture below. Wherever you put the [[poet-badge]] shortcode without the extra brackets is where the poetstamp will be shown. So as shown in the picture below the shortcode will display the stamp below the conclusion section.</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="JjrKZFl"><p>&nbsp;</p></blockquote>
+<p><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script><br />
+&nbsp;<br />
+This shortcode will timestamp your posts and send it to the test-net utilizing the API key to the API endpoint (The API URL). This will then put it on the blockchain. You can see the badge in action at the bottom of this WordPress post.</p>
+<h1>Conclusion</h1>
+<p>We have installed, configured, and utilize the po.et plugin in our post. By utilizing the shortcode we are able to put the po.et timestamp in our WordPress posts and be able to properly track our content. If there are any questions or issues please comment on this and I will get back to you as soon as possible.<br />
+[poet-badge]</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/06/using-frost-po-et-plugin/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Azure Active Directory &#8211; How to Give Permissions for a specific user in Azure Active Directory</title>
+		<link>https://frankthoughts.github.io/2018/06/azure-active-directory-giving-permissions-for-a-specific-user/</link>
+					<comments>https://frankthoughts.github.io/2018/06/azure-active-directory-giving-permissions-for-a-specific-user/#respond</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Sun, 17 Jun 2018 03:19:14 +0000</pubDate>
+				<category><![CDATA[Cloud Identity]]></category>
+		<category><![CDATA[AAD]]></category>
+		<category><![CDATA[Azure Active Directory]]></category>
+		<category><![CDATA[Enterprise Application]]></category>
+		<category><![CDATA[One]]></category>
+		<category><![CDATA[Permissions]]></category>
+		<category><![CDATA[Service Principal]]></category>
+		<category><![CDATA[Single]]></category>
+		<category><![CDATA[Specific]]></category>
+		<category><![CDATA[User]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=100</guid>
+
+					<description><![CDATA[Introduction This post is to help to teach How to Give Permissions for a specific user in Azure Active Directory. This post will assume that your API is already set up properly and you have Global Admin rights to grant the permissions to a specific user. If you are not a global admin for the [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h1>Introduction</h1>
+<p>This post is to help to teach How to Give Permissions for a specific user in Azure Active Directory. This post will assume that your API is already set up properly and you have Global Admin rights to grant the permissions to a specific user. If you are not a global admin for the tenant, you will receive a 400 error saying that you are not authorized to do this. For more information on setting up to utilize the Microsoft Graph API or AAD Graph API please refer to this article: <a href="https://blogs.msdn.microsoft.com/aaddevsup/2018/05/23/using-postman-to-call-the-microsoft-graph-api-using-authorization-code-flow/">https://blogs.msdn.microsoft.com/aaddevsup/2018/05/23/using-postman-to-call-the-microsoft-graph-api-using-authorization-code-flow/</a></p>
+<h1>Granting Permissions to a Specific User</h1>
+<p>When trying to grant a permission to an individual user you will have to grant a specific OAuth2permisison in the tenant for the user. You can do this by using the OAuth2PermissionGrants endpoint.<br />
+The only option right now is to utilize the Azure Active Directory(AAD) Graph API endpoint as the Microsoft Graph API doesn&#8217;t support this feature yet.<br />
+First, you will want to create an AAD Application Registration, and to press the grant permissions for the Application Registration. This will create an enterprise application for your AAD Application Registration which you will need later.<br />
+Using the AAD Graph API, you will want to make a post request to <em>https://graph.windows.net/$tenant/oauth2PermissionGrants?API-version=1.6</em><br />
+Replacing <em>$tenant</em> with your tenant ID.<br />
+In the request body, you will need to describe the properties for your new Oauth2PermissionGrant. I&#8217;ve described what you will need in your body below.</p>
+<pre>{
+"clientId": "This is the objectID of the enterprise application/service principal of the AAD Application Registration. You can find this by going to your enterprise Applications blade and finding the enterprise application you created earlier. The object ID should be there.",
+"consentType": "please refer to principalID attribute below for more information on the consent type; we will want to put Principal here to grant permissions to a single user",
+"expiryTime": "2027-10-08T19:26:10.0101209 (Insert your expiration time here)",
+"principalId": "If consentType is "AllPrincipals", the principal ID value should be null, and this consent will apply to all users in the organization.
+If consentType is "Principal" then this property specifies the objectId of the user that granted consent, and applies only to that user.",
+"resourceId": " bd8e522d-efb5-447e-a2aa-6f500446f2e1, place the resource ID of the resource you want your user to have access to, here I have placed an o365 exchange online object ID ",
+"scope": "(insert your scopes/permissions for the user here)",
+"startTime": "0001-01-01T00:00:00"
+}
+</pre>
+<p>For more information on the entity: OAuth2Permission Grant please refer to our documentation here: <a href="https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#oauth2permissiongrant-entity">https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#oauth2permissiongrant-entity</a><br />
+The scopes you can use are listed below.<br />
+Delegated (work or school account) Directory.ReadWrite.All, Directory.AccessAsUser.All<br />
+Delegated (personal Microsoft account) Not supported.<br />
+Application Directory.ReadWrite.All</p>
+<h1>Conclusion</h1>
+<p>By using the Azure Active Directory Graph API and sending a Post Request to the OAuth2PermissionGrant endpoint we are able to give a single user the proper scopes to access a secured API. I refer to another blog using Postman to get an access token utilizing the Authorization Code Flow in order to access the Microsoft Graph API. Note that the same process to get an access token for the Microsoft Graph API will be used to get an access to the AAD Graph API. The only difference will be to grant the proper permissions to the AAD Graph API instead of the Microsoft Graph API and to set a different resource when requesting the access token. After getting access to the AAD Graph API we construct the Post request to the oauth2permissions grant endpoint in the AAD Graph API creating the service principal for the AAD User so that they can access a secured API based on the object ID of the user using a service principal in AAD.<br />
+[poet-badge]</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/06/azure-active-directory-giving-permissions-for-a-specific-user/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Philosophical Musings &#8211; The Rumpelstiltskin Effect</title>
+		<link>https://frankthoughts.github.io/2018/06/rumpelstiltskin-effect/</link>
+					<comments>https://frankthoughts.github.io/2018/06/rumpelstiltskin-effect/#respond</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Fri, 15 Jun 2018 14:06:09 +0000</pubDate>
+				<category><![CDATA[Philosophical Musings]]></category>
+		<category><![CDATA[Fairy Tale]]></category>
+		<category><![CDATA[Meaning]]></category>
+		<category><![CDATA[Philosophy]]></category>
+		<category><![CDATA[Rumpelstiltskin]]></category>
+		<category><![CDATA[Rumpelstiltskin Effect]]></category>
+		<category><![CDATA[Stories]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=98</guid>
+
+					<description><![CDATA[Introduction This is an article over a concept I saw in an online lecture for Machine Learning. It starts with the professor going over a complex subject and then giving it a name. He then says that by giving it a name we are gaining control over it, (also known as) &#8220;the Rumpelstiltskin Effect&#8221;. Short [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h1>Introduction</h1>
+<p>This is an article over a concept I saw in an online lecture for Machine Learning. It starts with the professor going over a complex subject and then giving it a name. He then says that by giving it a name we are gaining control over it, (also known as) &#8220;the Rumpelstiltskin Effect&#8221;.</p>
+<h1>Short Summary of the Stories Behind Rumpelstiltskin</h1>
+<p>From my understanding there are many versions of this story, however after researching through them all; I have come to the conclusion they are all similar to the original Grimm Brothers version.<br />
+Scene Set</p>
+<ul>
+<li>Little Man</li>
+<li>Miller</li>
+<li>King</li>
+<li>Daughter/Woman</li>
+</ul>
+<p>The story consists of a miller and his daughter and a king. In most of the stories they say that the daughter is beautiful, it&#8217;s pretty odd and I don&#8217;t understand why they point it out. It doesn&#8217;t really fit into the rest of the story, but regardless. The miller is an arrogant man and boasts about how great his daughter is to the king, saying that his daughter can spin wheat into gold. The King now very interested in the daughter, gives her an ultimatum to turn a whole room of wheat into gold or die. The daughter tries to convince the king that she is unable to perform this task, however to no avail.<br />
+Now the daughter is crying in a room full of wheat, and depending on the story, some little man walks into the room. All the stories refer to this little man as something different: hobgoblin, manikin, dwarf, and etc&#8230; but basically, there&#8217;s this little man that walks into the room and offers to spin all the wheat into gold in exchange for something valuable to the little girl.<br />
+The previous paragraph&#8217;s set of events then occurs two more times; making the girl give up three valuable items in exchange for turning wheat into gold. The last item given up is typically her first-born (what is up with fairy tales asking for first-borns). She says yes, and later down the road regrets it.<br />
+Once she has her first-born the little man comes back to redeem his earnings. The little man now gives the woman a way out of the deal. In order to keep her first-born, she has to guess the little man&#8217;s name. He gives her three tries and some third party will end up telling the woman the little man&#8217;s name, Rumpelstiltskin. By knowing the name of Rumpelstiltskin, she is able to maintain control and keep her first-born.</p>
+<h1>The Rumpelstiltskin Effect</h1>
+<p>The idea behind the Rumpelstiltskin effect is that by knowing the name of something we are able to gain control over it. This was said in jest during the online lecture, however, I believe it has some merit in it. By being able to give a name to some set of actions, events, or anything, we are able to conscientiously act upon it. By giving it a name we give control over the abstract idea and are able to progress in a way we were unable to before. By understanding this idea/concept we can apply this to our own lives by giving names to abstract ideas or actions and thus gaining control over it.</p>
+<h1>Short Examples</h1>
+<p>It&#8217;s hard to explain but try conscientiously giving names to abstract concepts and ideas that you have and you will see some difference in your actions. The example I was watching was a lecture over Support Vector Machines (SVMs).<br />
+The lecturer first went over the basic building blocks of what the SVMs were and then named it the SVM. The Support Vector Machine is an algorithm to classify different items, let&#8217;s take for example fruit and vegetable on a hyperplane. Imagine classifying all the fruit and vegetables on an X-dimensional graph. But we don&#8217;t know that they&#8217;re fruit and vegetables to us it&#8217;s just data points on a hyperplane. By adding some classifications we are able to generate some linear/non-linear function that draws a line between some data points. All the items on the left of the line are fruits and the other side are vegetables. By adding more functions we are able to determine more specificity about the food. This algorithm is referred to as the support vector machine.<br />
+But I digress, for those who aren&#8217;t interested in Machine Learning algorithms; here is a more simple concept to utilize for the Rumpelstiltskin effect. There is this concept to get out of bed by counting down from 5 and then jumping out of bed. This is used by Mel Robbins who is quite successful. Right after waking up, if you count yourself down from 5 and get out of bed and say GO it&#8217;ll be easier. This abstraction would not work properly if you thought of all the steps and then gave it a go. More effectively, if you utilized the thought process &#8220;By counting down to 5, I am able to get of bed easier.&#8221;. Instead by calling it the 5-second rule, we are able to say &#8220;This morning I will use the 5-second rule to get up&#8221;. Now the first thought may be effective over the course of a week, month, or maybe even longer. However by giving it a name we are able to stick by it and consciously act upon it easier.</p>
+<h1>Summary</h1>
+<p>To summarize this post, the Rumpelstiltskin effect is when you give a name to something, and by giving it a name we gain power over it.  By giving it a name we are able to act more consciously on something and more effectively. I hope that you might keep an open mind and think about this effect yourself. Try it out on something and let me know if this is a load of bullshit or not. <img src="https://s.w.org/images/core/emoji/12.0.0-1/72x72/1f642.png" alt="🙂" class="wp-smiley" style="height: 1em; max-height: 1em;" /><br />
+[poet-badge]</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/06/rumpelstiltskin-effect/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Office Headphone Review &#8211; Plantronics Blackwire C725</title>
+		<link>https://frankthoughts.github.io/2018/06/office-headphone-review-plantronics-blackwire-c725/</link>
+					<comments>https://frankthoughts.github.io/2018/06/office-headphone-review-plantronics-blackwire-c725/#respond</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Wed, 13 Jun 2018 12:35:46 +0000</pubDate>
+				<category><![CDATA[Product Reviews]]></category>
+		<category><![CDATA[Headphones]]></category>
+		<category><![CDATA[Office]]></category>
+		<category><![CDATA[Plantronics Blackwire C725]]></category>
+		<category><![CDATA[Review]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=82</guid>
+
+					<description><![CDATA[Introduction This is a review on the Plantronics Blackwire C725, a solid headset that can be bought off of Newegg for about 130$. I would say overall that this headset is not worth the money and will go into some of the pros and cons of the headset below. This headset MSRPs for 170$. Design [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h1>Introduction</h1>
+<p>This is a review on the Plantronics Blackwire C725, a solid headset that can be bought off of Newegg for about 130$. I would say overall that this headset is not worth the money and will go into some of the pros and cons of the headset below. This headset MSRPs for 170$.</p>
+<h1>Design and Out of Box Experience</h1>
+<p>The design is like a budget headset, it comes in a blank cardboard box and has no bells and whistles.<br />
+<img src="https://www.plantronics.com/content/dam/plantronics/products/blackwire/blackwire-725.png.transform/hero-image/img.png" alt="Blackwire 725 Standard" /><br />
+In the box it comes with:</p>
+<ul>
+<li>USB headset</li>
+<li>Cloth Bag</li>
+</ul>
+<p>Needless to say, this headset packaging is very utility. That being said does the sound quality of this headset make up for the lack of bells and whistles and lackluster design?</p>
+<h1>General Overview</h1>
+<p>In response to the last question, these headphones do not live up to the lackluster design and price tag. The sound is very mediocre, and for the price is almost kind of ridiculous. In addition to that this headset&#8217;s microphone will rub up against your cheek making it so that you have to push the left ear up a little bit in order to avoid rubbing the mic. I feel like overall there are so many flaws and poor design issues that this headset&#8217;s 170$ MSRP price tag blows my mind. This headset was obviously designed for a company that receives a discount on these poor headsets.<br />
+These headphones do come with Automatic Noise Canceling so that when you put them on, they&#8217;re supposed to noise cancel. In general, the comfort is decent for letting you be able to wear these headphones for 5+ hours without any issues.</p>
+<h1>Sound Quality</h1>
+<p>The sound quality of these headphones wasn&#8217;t anything extravagant. Compared to most headsets of this caliber the C725 doesn&#8217;t match them at all. However, I haven&#8217;t experienced any points in time where I am actively conscience of the lackluster of sound. It does its job as a pair of office headphones.<br />
+If you&#8217;re looking for a headset for quality with a microphone I personally suggest the Plantronics Voyager Focus UC, these headphones for a bit more money are overall better with a microphone not to mention the other features.</p>
+<h1>Microphone Quality</h1>
+<p>The Microphone Quality on this pair of headphones is borderline bad as said, in the beginning, the microphone will rub up against your cheek. This headset when trying to talk to someone on skype will continue to make a rubbing sound into the microphone since it&#8217;s so close to the cheek.  You aren&#8217;t able to bend it either so you&#8217;re stuck with the microphone stuck close to your face.</p>
+<h1>General Overview</h1>
+<p>Overall this headset is not worth the money. The sound quality is mediocre, borderline bad microphone, active noise canceling, and USB wired audio. This headset at the budget price at Newegg for 130$ is extremely overpriced. I believe this headset should be more valued at 30-50$ but it is marked up over twice as much as it&#8217;s actual value.<br />
+&nbsp;<br />
+<span style="color: #444444; font-family: Consolas; font-size: small;">[poet-badge]</span><br />
+&nbsp;</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/06/office-headphone-review-plantronics-blackwire-c725/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Office Headphone Review &#8211; Plantronics Voyager Focus UC Review</title>
+		<link>https://frankthoughts.github.io/2018/06/plantronics-voyager-focus-uc-review/</link>
+					<comments>https://frankthoughts.github.io/2018/06/plantronics-voyager-focus-uc-review/#comments</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Sun, 03 Jun 2018 03:47:04 +0000</pubDate>
+				<category><![CDATA[Product Reviews]]></category>
+		<category><![CDATA[Bluetooth]]></category>
+		<category><![CDATA[Headphone Review]]></category>
+		<category><![CDATA[Headphones]]></category>
+		<category><![CDATA[Office]]></category>
+		<category><![CDATA[Plantronics Voyager Focus UC]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=71</guid>
+
+					<description><![CDATA[Introduction This blog post is over a pair of office headphones I received recently in a raffle. They are the Plantronics Voyager Focus UC, a nice pair of headphones overall with a slightly high price tag. They have some great features and some mediocre qualities. However for those who work at coffee shops or go [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h2>Introduction</h2>
+<p>This blog post is over a pair of office headphones I received recently in a raffle. They are the Plantronics Voyager Focus UC, a nice pair of headphones overall with a slightly high price tag. They have some great features and some mediocre qualities. However for those who work at coffee shops or go around a bit, these could be the headphones for you.</p>
+<h2>Design and Out of Box Experience</h2>
+<p>In the box the item comes with:<br />
+<img src="https://www.plantronics.com/content/dam/plantronics/products/voyager/voyager-focus-in-stand.png.transform/hero-image/img.png" alt="Voyager Focus UC, Standard " width="216" height="420" /></p>
+<ul>
+<li>Plantronics Voyager Focus UC Headphones</li>
+<li>Bluetooth USB device (referred to as the BT600)</li>
+<li>Cloth Bag</li>
+<li>Micro USB</li>
+<li>Charging Stand</li>
+<li>A couple of manuals and little booklets (none of particular importance)</li>
+</ul>
+<p>The Plantronics Voyager Focus UC are Bluetooth headphones that come with a cloth bag with a zipper on the inside to store your micro USB cable and the Bluetooth device that it comes with. It&#8217;s kind of a pain to get the headphone charger stand out because the wires were kind of stuck in the cardboard. The manuals are long and tedious, and don&#8217;t provide anything beneficial (although most people don&#8217;t even read the manuals).</p>
+<h2>General Overview</h2>
+<p>The headphones themselves are quite comfortable; they feel like pillows on your ears. It has a nice adjustable band to fit your head size and it has got lots of nice software features included with the headphone device which I will get into in the section Software Features.<br />
+The Microphone comes with a sensor that can detect if your headphones have been taken off or put on so that when you put them on and the ANC(automatic noise canceling) switch is enabled it will automatically turn on the noise canceling. This is a great feature and makes the transition from the outside world to my workstation feel seamless. This switch can be found under the right ear speaker.<br />
+The benefits of these headphones don&#8217;t come from the high quality sound, portability, microphone quality</p>
+<h2>Sound Quality</h2>
+<p>I&#8217;m not an extreme audiohpile but I have dabbled in some high end headphones, my current headphones are the <a href="https://en-us.sennheiser.com/headphones-high-end-stereo-hd-599">Sennheiser HD 599.</a> The HD 599 headphones are much higher quality, more comfortable, better sounding cans, and are an all around better set of headphones in terms of sound quality.<br />
+That being said these are still not your run of the mill headphones, they are decent enough to compare to the classic <a href="https://www.amazon.com/Koss-Porta-Pro-Headphones-Silver/dp/B00001P4ZH">Koss Porta Pro</a> and arguably are a bit better than Porta Pros. It has better highs, lows, but there is no bass. They are more comfortable on your ear, and I feel like they are able to conform to your head better than the Porta Pros because of the small leather band that they have below the metal band.<br />
+That being said you will be able to hear other people on phone calls or Skypes with the Plantronics just fine,the microphone is more convenient and the couple of sensors added into the headset make it a pleasant experience to call someone.<br />
+Overall, if you&#8217;re looking for a pair of headphones based solely on sound quality you&#8217;re better off looking at Sennheiser, Grados, or Audio-Technica.</p>
+<h2>Software Features</h2>
+<p>There are two major software features that come with the headphones I would like to point out:</p>
+<ul>
+<li>Can connect two devices at one time, meaning it can connect to your computer and phone.</li>
+<li>When the headphones turn on, it says the talk time left for the headphone set.</li>
+</ul>
+<p>Out of the box these are some great features that I greatly appreciate. There are some other features once you install the Plantronics Hub software which can be found <a href="https://www.plantronics.com/us/en/support/downloads-apps">here</a>.<br />
+A couple of the features that are added once you install the Plantronics hub are amazing as well. One being that when you are talking and the mic is muted, the computer will pop up with a notification that the mic is muted. This is a greatly appreciated advance in software as there have been many a times when I&#8217;ve been talking and there is no response, only to find out that I&#8217;ve been talking for 3-5 minutes with the mic on mute.<br />
+In addition to the mic mute notification feature, you can see how long the headset has left in battery life straight from your computer with the Plantronics hub software making it so that you can plan accordingly if you&#8217;re headphones are about to die.<br />
+Overall regarding the Software features for this headset, they are amazing. I&#8217;ve never had a pair of headphones that came with software that actually benefited the experience and made me want to use them more. I would feel like Iron man when using these pair of cans. If you&#8217;re looking to experience a similar feeling I highly suggest trying it.</p>
+<h2>Microphone Quality</h2>
+<p>The microphone quality is decent, people can hear you but t&#8217;s not going to be something you want to use in a studio or anything. Better than your typical gaming headset but worse than the Audio Technica AT2020 or Blue Yeti USB Microphone. Generally speaking these headphones have a mediocre microphone and really is the bare minimum for talking to people over the internet.</p>
+<h2>Portability and Battery Life</h2>
+<p>This is where the headphones personally shine. They aren&#8217;t as portable as a pair of truly wireless headphones but hey are going to be alot more comfortable. Personally I hate in ear buds and have a pair of Soundpeats I bought on amazon for 20$ when I go running or out and I want a pair of headphones in case. But if you plan on going to a coffee shop or somewhere to sit and use your computer these headphones shine brightly.<br />
+The battery life on these headphones are crazy too, at a full charge they are supposed to give 14 hours of life. I can&#8217;t say I&#8217;ve been able to utilize these headphones for 14 hours straight to say that this is true, but I can say that I&#8217;ve never been out of battery with these headphones after a day of use. They also implemented fast charging so they will charge very quickly once you put it on the charging stand, finishing a charge within 1-2 hours.</p>
+<h2>Value</h2>
+<p>The MSRP for this item is 300$ from the website (<a href="https://www.plantronics.com/us/en/product/voyager-focus-uc">found here</a>), however I was able to found it on Amazon for about 180$ <a href="https://www.amazon.com/Plantronics-b825m-Voyager-Focus-20265202/dp/B013F4LLZ0">here</a>. Also, it was found on Newegg at the time of this post for <a href="https://www.newegg.com/Product/Product.aspx?Item=0TH-000R-00584">160$</a>.<br />
+Value much like beauty is in the eye of the beholder. With Sound quality slightly better than Porta Pros, Microphone quality being just good enough for work, very good battery life, and very comfortable headphones at the minimum price of optimistically 150$ new, I&#8217;d have to say that these headphones are really for those who don&#8217;t mind splurging a little bit. If you&#8217;re trying to get a budget friendly pair of headphones I would suggest getting the Porta Pros and slapping a mic on them or perhaps just using your phone. But if you&#8217;re willing to spend a little more or if you can find a pair for under 100$ I&#8217;d say buy them, because for under 100$ it would be worth it. At 150$ I wouldn&#8217;t purchase these.</p>
+<h2>General Overview</h2>
+<p>Although mediocre in almost every area, I feel like they really nailed the core features I&#8217;m looking for in a pair of headphones. I believe when you bring out the fact that these are Bluetooth headphones however, the qualities of these headphones outshine all other headsets I&#8217;ve ever personally used.<br />
+By being good enough in sound quality, microphone, battery life, and comfort I feel like the mixture of bare minimum in every aspect makes these headphones my go to headphones for going around with. By nailing the bare minimum of quality that I&#8217;m willing to put up with and putting it into a comfortable, high battery life headset I can say that I am happy with these headphones. In addition to these bare minimum requirements of mine, the software features are amazing too. That being said, I&#8217;ve been comparing these Bluetooth headphones to wired headphones throughout this review. Adding the convenience of Bluetooth, this headset really blows out all the other Bluetooth headphones I&#8217;ve utilized before.<br />
+These software features provide an Iron Man like experience and truly do make using these headphones an extremely pleasant experience. The small little software features are what really tip these headphones from okay/good to a great pair of headphones making my life just a little bit easier by taking care of small minuscule issues that we all have to face from time to time.<br />
+Overall I&#8217;d recommend these headphones (if you can find it at a good price).<br />
+<span style="color: #444444; font-family: Consolas; font-size: small;">[poet-badge]</span><br />
+&nbsp;</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/06/plantronics-voyager-focus-uc-review/feed/</wfw:commentRss>
+			<slash:comments>3</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Quick Microwave Breakfast in the Office &#8211; Entire Meal with Egg Whites, Spinach, and Salsa</title>
+		<link>https://frankthoughts.github.io/2018/05/microwave-breakfast/</link>
+					<comments>https://frankthoughts.github.io/2018/05/microwave-breakfast/#respond</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Wed, 30 May 2018 04:03:27 +0000</pubDate>
+				<category><![CDATA[Healthy Office Kitchen Cookerie]]></category>
+		<category><![CDATA[10 minute]]></category>
+		<category><![CDATA[Cook in Office]]></category>
+		<category><![CDATA[Easy Breakfast]]></category>
+		<category><![CDATA[Egg Whites]]></category>
+		<category><![CDATA[Healthy]]></category>
+		<category><![CDATA[Microwavable Breakfast]]></category>
+		<category><![CDATA[Microwave]]></category>
+		<category><![CDATA[Salsa]]></category>
+		<category><![CDATA[Simple]]></category>
+		<category><![CDATA[ten]]></category>
+		<category><![CDATA[Tim Ferriss]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=15</guid>
+
+					<description><![CDATA[Introduction This is an easy 10 minute Microwave Breakfast for under 2$ that you can cook at the office. This is a great quick microwave breakfast in the office. I like to minimize my time with breakfast but cereal, muffins, and other quick fixes are unhealthy, expensive, and leave an over processed taste in my [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h1>Introduction</h1>
+<p>This is an easy 10 minute Microwave Breakfast for under 2$ that you can cook at the office. This is a great quick microwave breakfast in the office.<br />
+I like to minimize my time with breakfast but cereal, muffins, and other quick fixes are unhealthy, expensive, and leave an over processed taste in my mouth over time. So I&#8217;ve evolved my breakfast routine to some healthier foods and for cost efficiency and time I have made it so that it takes about 5 minutes of actual work to get a healthy tasty meal at work.<br />
+I utilize a modified version of the Tim Ferriss, back when he seemed a bit more awkward on camera.<br />
+Linked to it is below,<br />
+<iframe title="How to Make A Healthy Breakfast In Under 3 Minutes" width="1080" height="608" src="https://www.youtube.com/embed/fd-7a_wdVZk?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br />
+Unfortunately it&#8217;s not very easy to find this recipe in text form, so I had to watch the whole video. I know I&#8217;d rather read compressed material than watch a video and try to extract the information.<br />
+Nonetheless he had some great ideas obviously and now is kicking it with famous people on his new podcast. I&#8217;m going to spare you the 6 minutes and give you a quick run down of the recipe.</p>
+<h1>Quick Microwave Breakfast in the Office</h1>
+<h2><strong>Hardware Requirements (Initial cost of ~$20-40)</strong></h2>
+<ul>
+<li>Microwave (20$ for a cheap microwave at in store at Kroger, I&#8217;ve noticed that online ones are quite expensive a quick search got a cheap 23$ one at a Sears outlet, and 36$ for a Hamilton beach at walmart)</li>
+<li>Microwavable Container (5-10$ one time purchase)</li>
+</ul>
+<p><strong>Time Cost: About 10-20 minutes searching online. 30-50 minutes going into store to purchase one.</strong><br />
+&nbsp;<br />
+&nbsp;</p>
+<h2><strong>Material Requirements ($2.33 &#8211; $4.00)</strong></h2>
+<ul>
+<li>Liquid Egg Whites ($3.50 for about 16oz, I use about $0.50~$0.80 cents worth of it each time)</li>
+<li>Salsa  [you can pick whichever salsa, keep it in context of a meal of egg whites and other breakfasts my favorite is mango salsa which funnily sounds horrible on chips] (~$3.00 for ~16oz, and I use about 1/6 ea time so about $0.5)</li>
+<li>Frozen Chopped Spinach (I buy mine at Whole Foods for $2.00, and I use about 1/5 the container each time so about $0.40)</li>
+<li>Salt and Pepper (free~1$)</li>
+<li>Frozen fruit or Fresh fruit depending on your budget, location, and convenience ($1-4, I like to buy a decently size box of sliced mango at El Ranchero for about $3.00 for convenience. I eat about 1/3 of it so I&#8217;m pricing this at $1 personally. But you could easily buy cheaper fruit some healthy cheap fruits are listed <a href="https://greatist.com/health/44-healthy-foods-under-1">here</a> the cheapest being grapes and oranges for about $0.5 each)</li>
+<li>Coffee/Tea (free ~$0.33-$1.00)</li>
+</ul>
+<p><strong>Time Cost : 5-10minutes of cooking and prep time.</strong><br />
+<em>Nice to haves : Salsa con Queso to put on your spinach ($3.00 it makes it super good)</em><br />
+&nbsp;<br />
+So for about 2-3$ for each breakfast and about 10-15 minutes you can get a large filling healthy breakfast at work. Most work places have Microwaves so this is really most convenient if you already have one. Once you have these items together below are the steps I follow:</p>
+<h1>Directions</h1>
+<p>I use a 12 oz cup and pour half to 3/4 of the cup of liquid egg whites. Then I put the cup into the microwave for 2 minutes and 30 seconds.<br />
+During the time it&#8217;s cooking I pour some frozen spinach into another 12oz cup and then follow the directions and pour a bit of water onto the frozen spinach. I pour about enough to fill up the 12oz cup as it will thaw and fill up half the cup once cooked.<br />
+Once finished, the egg whites should be cooked; take it out, and put the frozen spinach into the Microwave. Then microwave the frozen spinach for about 1.5 minutes.<br />
+While the frozen spinach is cooking, I put my egg whites onto a paper plate, throw some salt and pepper on it, and then pour my salsa over the egg whites.<br />
+Once the frozen spinach has microwaved for 1.5 minutes, take it out, pour out the water, and then put it back into the Microwave for 2 minutes.<br />
+At this point I&#8217;ll get the fruit ready, you will need to microwave respectively the frozen fruit you have. I personally love my sliced mango and I can just take it out and put it next to my egg whites.<br />
+Once the Spinach is finished cooking, I put it out on my plate. If you have decided to go down the salsa con queso route, you&#8217;ll have to microwave the salsa con queso for about 0:15-0:30 seconds and then pour it on your spinach. (You won&#8217;t regret it)<br />
+I also have coffee or tea with my breakfast, luckily I have free coffee and tea and just grab some.</p>
+<h1>Conclusion</h1>
+<p>I&#8217;m also lucky and where I work they have disposable paper cups and plates that I can microwave stuff in so I personally use that stuff and throw it all out once I&#8217;m done making it so that I don&#8217;t have to clean anything.<br />
+You can use microwavable plastic, but personally I would not microwave stuff in plastic. I believe there is no proof saying that microwaving plastic will cause cancer but practice at your own risk.<br />
+Thank you for reading my blog, please comment below on what you would like to read and I&#8217;ll try to indulge. <img src="https://s.w.org/images/core/emoji/12.0.0-1/72x72/1f642.png" alt="🙂" class="wp-smiley" style="height: 1em; max-height: 1em;" /><br />
+[poet-badge]</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/05/microwave-breakfast/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>
