@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Deleted &#8211; FrankThoughts</title>
+	<atom:link href="https://frankthoughts.github.io/tag/deleted/feed/" rel="self" type="application/rss+xml" />
+	<link>http://frankthoughts.github.io/</link>
+	<description>Frank-Auth-Expert</description>
+	<lastBuildDate>Sun, 12 Aug 2018 20:12:57 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=5.4</generator>
+	<item>
+		<title>Azure Services &#8211; Fix Persistence Issues for WordPress on Linux Azure App Services</title>
+		<link>https://frankthoughts.github.io/2018/08/azure-services-fix-persistence-issues-for-wordpress-on-linux-azure-app-service/</link>
+					<comments>https://frankthoughts.github.io/2018/08/azure-services-fix-persistence-issues-for-wordpress-on-linux-azure-app-service/#respond</comments>
+		
+		<dc:creator><![CDATA[frhu]]></dc:creator>
+		<pubDate>Sun, 12 Aug 2018 20:12:57 +0000</pubDate>
+				<category><![CDATA[Azure Services]]></category>
+		<category><![CDATA[App Service]]></category>
+		<category><![CDATA[Azure]]></category>
+		<category><![CDATA[Deleted]]></category>
+		<category><![CDATA[Disappeared]]></category>
+		<category><![CDATA[Issues]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[Lost]]></category>
+		<category><![CDATA[Persistence]]></category>
+		<category><![CDATA[Plugins]]></category>
+		<category><![CDATA[Wordpress]]></category>
+		<guid isPermaLink="false">http://frankthoughts.azurewebsites.net/?p=165</guid>
+
+					<description><![CDATA[Introduction Every now and then I was having issues with my WordPress on Linux App Service gallery application I had gotten from the Azure Marketplace. My plugins would disappear, my themes would break, and all my pictures would disappear. This article is to help users with issues like this, showing how to fix persistence issues [&#8230;]]]></description>
+										<content:encoded><![CDATA[<h1>Introduction</h1>
+<p>Every now and then I was having issues with my WordPress on Linux App Service gallery application I had gotten from the Azure Marketplace. My plugins would disappear, my themes would break, and all my pictures would disappear. This article is to help users with issues like this, showing how to fix persistence issues for WordPress on Linux Azure App Services.</p>
+<h2>Explanation of Behavior</h2>
+<p>The reason that this issue occurs is due to the fact that the files are not persisted on the file system after restarts, moved to another worker, or other web app maintenance that Azure&#8217;s master node deems to be suitable for the web app. This makes it so that once there is maintenance on the web app, the cached data isn&#8217;t moved over properly. The posts are kept because they are stored on a SQL database (from my understanding).</p>
+<h2>Navigating to Kudu</h2>
+<p>Before configuring the web app to persist data, first you have to make sure that you backup your current WordPress site. This is because the setting you are going to change is going to wipe the web app and remove all WordPress content.</p>
+<blockquote><p>Before backing up your site, make sure that you have all the plugins, etc&#8230; installed.</p></blockquote>
+<p>In order to backup your current WordPress site, you&#8217;ll have to open Kudu on the WordPress application.<br />
+Kudu is a sort of dashboard to debug and connect to your app service. For more information on Kudu you can take a look at these links :<br />
+<a href="https://azure.microsoft.com/en-us/resources/videos/what-is-kudu-with-david-ebbo/">Video on Using Kudu From Microsoft</a><br />
+That being said, in order to access application&#8217;s Kudu please navigate to your app service &gt; advanced tools &gt; go.<br />
+<img src="https://i.imgur.com/Yor6IWP.png" /><br />
+This will bring you to the Kudu dashboard. From there, go to Debug Console &gt; SSH.<br />
+<img src="https://i.imgur.com/KgZVzJA.png" /></p>
+<h2>Backing Up Your App Service</h2>
+<p>Now that we are in Kudu&#8217;s SSH console, we can start backing up the app service&#8217;s data. In the SSH Console run the following commands:<br />
+[code language=&#8221;powershell&#8221;]<br />
+cd /home/site/wwwroot<br />
+apk update<br />
+apk add zip<br />
+apk add ncftp<br />
+zip -r wwwroot.zip .<br />
+[/code]<br />
+Here we are basically going to the wwwroot for your wordpress site, and zipping up everything on the app service and putting it in the wwwroot directory.<br />
+Now that we have created a backup of our WordPress site, we still need to put it into our App Service deployment code. In order to do this, first we will need to get the username, password, and FTP site from the publish profile. To get the publish profile, go to your app service and press &#8220;Get Publish Profile&#8221; in the Azure portal.<br />
+<img src="https://i.imgur.com/gfNwqMp.png" /><br />
+Now go back to the SSH console that you got to through Kudu. Now use the code below, replacing YourUsername and YourFTPURL with your respective information retrieved from the Publish Profile :<br />
+[code language=&#8221;powershell&#8221;]<br />
+ncftp -u &#8216;YourUsername\$YourUsername&#8217; &lt;a href=&quot;ftp://waws-prod-bay-081.ftp.azurewebsites.windows.net&quot;&gt;ftp://YourFTPUrl &lt;/a&gt;site<br />
+[/code]<br />
+Enter your password, and then use the commands :<br />
+[code language=&#8221;powershell&#8221;]<br />
+cd site/wwwroot<br />
+put wwwroot.zip<br />
+[/code]<br />
+Now you should have successfully backed up your app service.</p>
+<h2>Configuring App Service to Persist</h2>
+<blockquote><p>Note: Please make sure that you have backed up your app service properly. If you aren&#8217;t sure, please make sure to copy the content on your wordpress blog and back it up. This process is going to wipe your currently deployed app service.</p></blockquote>
+<p>Now that we have backed up our app service. We will have to configure our App Service to properly cache your data. In order to do this go to your app service&#8217;s app settings and simply configure the websites_enable_app_service_storage from false to true.<br />
+<img src="https://i.imgur.com/bXYT4OK.png" /><br />
+&nbsp;<br />
+Now that we have configured this to true, save it.</p>
+<h2>Restoring Your App Service</h2>
+<p>This will now wipe your app service. Now when you go to your website now and it shows a default app service page. This is normal.<br />
+Reopen your Kudu SSH console, and unzip the file you zipped in the backup stage into your app service.<br />
+[code language=&#8221;powershell&#8221;]<br />
+unzip wwwroot.zip<br />
+[/code]<br />
+You have now restored the App Service and it will look like it used to.</p>
+<h2>Conclusion</h2>
+<p>We have gone through connecting to Kudu, backing up your app service, configuring your app service for persistence, and restoring your app service. Now your WordPress should be ready to go and your plugins won&#8217;t disappear again. If you have anymore questions feel free to post a comment or to open a support ticket with Azure, one of Microsoft&#8217;s Support Engineers will reach out to you to resolve the issue as soon as possible.<br />
+[poet-badge]<br />
+&nbsp;</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://frankthoughts.github.io/2018/08/azure-services-fix-persistence-issues-for-wordpress-on-linux-azure-app-service/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>
